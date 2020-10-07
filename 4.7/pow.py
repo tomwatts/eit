@@ -1,4 +1,4 @@
-def my_pow(x, y):
+def brute_pow(x, y):
     if y == 0:
         return 1
 
@@ -9,25 +9,32 @@ def my_pow(x, y):
     return result
 
 
-def pow_rec(x, y):
+def rec_pow(x, y):
     if y == 0:
         return 1
     elif y == 1:
         return x
-    elif y == 2:
-        return x * x
     else:
-        return x * pow_rec(x, y - 1)
+        return x * rec_pow(x, y - 1)
 
 
-assert(my_pow(7, 0) == 1)
-assert(my_pow(0, 0) == 1)
-assert(my_pow(2, 4) == 16)
-assert(my_pow(8, 8) == 16777216)
-assert(my_pow(100, 4) == 100000000)
+def tree_pow(x, y):
+    if y == 0:
+        return 1
+    elif y == 1:
+        return x
+    else:
+        # Split exponent in half, compute halves, then multiply
+        half = tree_pow(x, y // 2)
+        return half * half * (x if y % 2 else 1)
 
-assert(pow_rec(7, 0) == 1)
-assert(pow_rec(0, 0) == 1)
-assert(pow_rec(2, 4) == 16)
-assert(pow_rec(8, 8) == 16777216)
-assert(pow_rec(100, 4) == 100000000)
+
+for f in [brute_pow, rec_pow, tree_pow]:
+    assert(f(7, 0) == 1)
+    assert(f(0, 0) == 1)
+    assert(f(2, 2) == 4)
+    assert(f(2, 3) == 8)
+    assert(f(2, 4) == 16)
+    assert(f(8, 8) == 16777216)
+    assert(f(100, 4) == 100000000)
+    assert(f(2, 50) == 1125899906842624)
