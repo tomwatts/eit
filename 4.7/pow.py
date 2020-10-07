@@ -1,3 +1,7 @@
+import functools
+import time
+
+
 def brute_pow(x, y):
     if y == 0:
         return 1
@@ -29,12 +33,23 @@ def tree_pow(x, y):
         return half * half * (x if y % 2 else 1)
 
 
+
 for f in [brute_pow, rec_pow, tree_pow]:
-    assert(f(7, 0) == 1)
-    assert(f(0, 0) == 1)
-    assert(f(2, 2) == 4)
-    assert(f(2, 3) == 8)
-    assert(f(2, 4) == 16)
-    assert(f(8, 8) == 16777216)
-    assert(f(100, 4) == 100000000)
-    assert(f(2, 50) == 1125899906842624)
+    for args, expected in [
+        ((7, 0), 1),
+        ((0, 0), 1),
+        ((2, 2), 4),
+        ((2, 3), 8),
+        ((2, 4), 16),
+        ((8, 8), 16777216),
+        ((100, 4), 100000000),
+        ((2, 50), 1125899906842624),
+        ]:
+
+        tic = time.perf_counter()
+        actual = f(*args)
+        toc = time.perf_counter()
+        elapsed_time = toc - tic
+        print(f"Case: {args}, Elapsed time: {elapsed_time:0.9f} seconds")
+
+        assert actual == expected
