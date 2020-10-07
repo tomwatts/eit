@@ -4,9 +4,7 @@
 int reverse_digits(int i) {
     int result = 0;
     while (i != 0) {
-        int ones_digit = i % 10;
-        result *= 10;
-        result += ones_digit;
+        result = result * 10 + i % 10;
         i = i / 10;
     }
 
