@@ -1,10 +1,19 @@
-# Returns dict with buy and sell days as well as profit, none if profit not possible
+# Returns max possible profit, 0 if profit not possible
 def buy_sell(stock_prices):
     profit = 0
-    for i in range(len(stock_prices) - 1):  # Stop on the final day
+
+    for i in range(len(stock_prices) - 1):  # Stop before the final day
         buy_price = stock_prices[i]
-        sell_price = max(stock_prices[i+1:])
-        profit = max(profit, sell_price - buy_price)
+
+        # Get the max price from the remaining days
+        sell_price = 0
+        for j in range(i+1, len(stock_prices)):
+            if stock_prices[j] > sell_price:
+                sell_price = stock_prices[j]
+
+        possible_profit = sell_price - buy_price
+        if possible_profit > profit:
+            profit = possible_profit
 
     return profit
 
