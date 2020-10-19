@@ -17,7 +17,7 @@ int string_to_int(std::string str) {
 
 
 std::string int_to_string(int i) {
-    if (i == 0) {
+    if (!i) {
         return "0";
     }
 
@@ -34,7 +34,7 @@ std::string int_to_string(int i) {
         ++n_digits;
     }
 
-    while (i != 0) {
+    while (i) {
         int rename_me = std::pow(10, --n_digits);
         result.push_back((i / rename_me) + '0');
         i %= rename_me;
@@ -48,9 +48,11 @@ int main() {
 
     printf("Input: %s, Result: %i\n", "0", string_to_int("0"));
     printf("Input: %s, Result: %i\n", "-0", string_to_int("-0"));
+    printf("Input: %s, Result: %i\n", "1", string_to_int("1"));
     printf("Input: %s, Result: %i\n", "314", string_to_int("314"));
     printf("Input: %s, Result: %i\n", "-314", string_to_int("-314"));
     printf("Input: %i, Result: %s\n", 0, int_to_string(0).c_str());
+    printf("Input: %i, Result: %s\n", 1, int_to_string(1).c_str());
     printf("Input: %i, Result: %s\n", 314, int_to_string(314).c_str());
     printf("Input: %i, Result: %s\n", -314, int_to_string(-314).c_str());
 
