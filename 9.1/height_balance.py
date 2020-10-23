@@ -15,24 +15,26 @@ class Node:
             self.right.PrintTree()
 
 
-def get_tree_height(root):
+def get_tree_height_balance(root):
     left_height = 0
     right_height = 0
+    left_balanced = True
+    right_balanced = True
 
     if root.left is None and root.right is None:
-        return 0
+        return (0, True)
     
     if root.left is not None:
-        left_height = get_tree_height(root.left)
+        left_height, left_balanced = get_tree_height_balance(root.left)
+        if not left_balanced:
+            return (-1, False)
 
     if root.right is not None:
-        right_height = get_tree_height(root.right)
+        right_height, right_balanced = get_tree_height_balance(root.right)
+        if not right_balanced:
+            return (-1, False)
 
-    return 1 + max(left_height, right_height)
-
-
-def is_height_balanced(root):
-    return abs(get_tree_height(root.left) - get_tree_height(root.right)) <= 1
+    return (1 + max(left_height, right_height), (abs(left_height - right_height) <= 1) and left_balanced and right_balanced)
 
 
 root = Node(314)
@@ -45,19 +47,23 @@ root.left.right = Node(561)
 root.right.left = Node(2)
 root.right.right = Node(271)
 
+# A perfect tree
+assert get_tree_height_balance(root)[1]
+
 root.left.left.left = Node(28)
 root.left.left.right = Node(0)
+
+# Height difference of one still height balanced
+assert get_tree_height_balance(root)[1]
+
 root.left.right.right = Node(3)
-root.right.left.right = Node(1)
-root.right.right.right = Node(28)
+
+# Still balanced...
+assert get_tree_height_balance(root)[1]
 
 root.left.right.right.left = Node(17)
-root.right.left.right.left = Node(401)
-root.right.left.right.right = Node(257)
+root.left.right.right.left.left = Node(71)
 
-root.right.left.right.left.right = Node(641)
+# Balanced at root, but not balanced at one child
+assert not get_tree_height_balance(root)[1]
 
-assert is_height_balanced(root)
-
-root.right.left.right.left.right.right = Node(641)
-assert not is_height_balanced(root)
