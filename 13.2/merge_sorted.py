@@ -1,16 +1,18 @@
 def merge(a, b):
-    j = 0
-    for i in b:
-        while j < len(a) and a[j] < i:
-            j += 1
+    a_idx = a.index(None) - 1  # Last non-None element
+    b_idx = len(b) - 1  # Assume b has no trailing Nones
+    write_idx = a_idx + b_idx + 1
 
-        if j >= len(a):
-            a.append(i)
+    while write_idx >= 0:
+        if b_idx >= 0 and a[a_idx] <= b[b_idx]:
+            a[write_idx] = b[b_idx]
+            b_idx -= 1
         else:
-            # Could avoid insert by building separate result array
-            a.insert(j, i)
+            a[write_idx] = a[a_idx]
+            a_idx -= 1
+        write_idx -= 1
 
     return a
 
 
-assert merge([3, 13, 17], [3, 7, 11, 19]) == [3, 3, 7, 11, 13, 17, 19]
+assert merge([3, 13, 17, None, None, None, None, None], [3, 7, 11, 19]) == [3, 3, 7, 11, 13, 17, 19, None]
