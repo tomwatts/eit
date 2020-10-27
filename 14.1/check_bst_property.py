@@ -52,3 +52,6 @@ assert check_bst_tree(root)
 
 root.right.left.right.left.right = Node(3100)
 assert not check_bst_tree(root)
+
+root.data = 42
+assert not check_bst_tree(root)
